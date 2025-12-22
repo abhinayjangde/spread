@@ -5,6 +5,8 @@ import { FaSearch } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { IoBookmarkSharp } from "react-icons/io5";
+import FeedCard from "@/components/FeedCard";
+import Image from "next/image";
 
 interface SpreadSidebarButton {
   title: string,
@@ -40,7 +42,8 @@ export default function Home() {
       {/* Sidebar  */}
       <div className="col-span-2 pt-3">
         <Link href={"/"} className="text-3xl h-fit cursor-pointer">
-          <FaTwitter className="ml-3" />
+          <Image src="https://avatars.githubusercontent.com/u/166032907?v=4" alt="Logo" width={40} height={40}
+            className="rounded-full ml-3" />
         </Link>
         <div className="">
           <ul className="mt-7">
@@ -51,13 +54,39 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <button className="cursor-pointer mt-4 text-xl px-8 w-fit ml-3 bg-blue-500 text-white py-2 rounded-full hover:bg-blue-600 transition-all">Post</button>
+          <button className="cursor-pointer mt-4 text-xl px-8 w-fit ml-3 bg-black text-white py-2 rounded-full hover:bg-gray-800 transition-all">Post</button>
         </div>
       </div>
       {/* Feed  */}
-      <div className="col-span-6 border-x"></div>
+      <div className="col-span-5 h-screen overflow-y-scroll border-x border-gray-400">
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+      </div>
       {/* Widgets  */}
-      <div className="col-span-3"></div>
+      <div className="col-span-4">
+        <div className="m-4 p-4 border border-gray-400 rounded-lg">
+          <h2 className="font-bold text-2xl mb-4">You might like</h2>
+          <p>This is a placeholder for widgets like trends, suggestions, etc.</p>
+        </div>
+        <div className="m-4 p-4 border border-gray-400 rounded-lg">
+          <h2 className="font-bold text-2xl mb-4">Widgets</h2>
+          <p>This is a placeholder for widgets like trends, suggestions, etc.</p>
+        </div>
+        <div className="m-4 p-4 border border-gray-400 rounded-lg">
+          <h2 className="font-bold text-2xl mb-4">What’s happening</h2>
+          <p>This is a placeholder for widgets like trends, suggestions, etc.</p>
+        </div>
+      </div>
     </div>
   );
 }
