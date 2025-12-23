@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { FaTwitter } from "react-icons/fa6";
+import toast from "react-hot-toast";
 import { GoHomeFill } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
@@ -9,6 +9,9 @@ import { IoBookmarkSharp } from "react-icons/io5";
 import FeedCard from "@/components/FeedCard";
 import Image from "next/image";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { useCallback } from "react";
+import { graphqlClient } from "@/clients/api";
+import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 
 interface SpreadSidebarButton {
   title: string,
@@ -39,9 +42,16 @@ const sidebarMenuItems: SpreadSidebarButton[] = [
 ]
 
 export default function Home() {
-  const handleSingInWithGoogle = (cred: CredentialResponse) => {
-    console.log(cred);
-  }
+  const handleSingInWithGoogle = useCallback(async (cred: CredentialResponse) => {
+    const googleToken = cred.credential;
+    if (!googleToken) {
+      toast.error("Google sign-in failed. Please try again.");
+      return;
+    }
+    const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, { token: googleToken })
+    toast.success(`Welcome back, ${verifyGoogleToken.email}!`);
+    console.log(verifyGoogleToken);
+  }, []);
   return (
     <div className="grid grid-cols-12 h-screen w-screen px-56">
       {/* Sidebar  */}
