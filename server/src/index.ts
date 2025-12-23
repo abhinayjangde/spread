@@ -1,13 +1,13 @@
-import express from 'express';
+import { startServer } from './app/index.js';
 import env from './config/env.js';
 
-const app = express();
-const port = env.port;
+async function init() {
+    const app = await startServer();
+    const port = env.port;
 
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+init();
