@@ -3,6 +3,7 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@as-integrations/express5';
 import type { Express } from "express";
 import cors from 'cors';
+import { User } from "../user/index.js";
 
 
 export async function startServer() {
@@ -10,13 +11,14 @@ export async function startServer() {
 
     const apolloServer = new ApolloServer({
         typeDefs: `
-        type Query {
-            hello: String
-        }
+            ${User.types}
+            type Query {
+                ${User.queries}
+            }
         `,
         resolvers: {
             Query: {
-                hello: () => 'Hello world!',
+                ...User.resolvers.queries
             },
         },
 

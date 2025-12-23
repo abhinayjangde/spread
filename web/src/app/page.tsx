@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { FaTwitter } from "react-icons/fa6";
 import { GoHomeFill } from "react-icons/go";
@@ -7,6 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { IoBookmarkSharp } from "react-icons/io5";
 import FeedCard from "@/components/FeedCard";
 import Image from "next/image";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 interface SpreadSidebarButton {
   title: string,
@@ -37,6 +39,9 @@ const sidebarMenuItems: SpreadSidebarButton[] = [
 ]
 
 export default function Home() {
+  const handleSingInWithGoogle = (cred: CredentialResponse) => {
+    console.log(cred);
+  }
   return (
     <div className="grid grid-cols-12 h-screen w-screen px-56">
       {/* Sidebar  */}
@@ -75,6 +80,10 @@ export default function Home() {
       {/* Widgets  */}
       <div className="col-span-4">
         <div className="m-4 p-4 border border-gray-400 rounded-lg">
+          <h2 className="font-bold text-2xl mb-4">New to Spread</h2>
+          <GoogleLogin onSuccess={(cred) => handleSingInWithGoogle(cred)} />
+        </div>
+        <div className="m-4 p-4 border border-gray-400 rounded-lg">
           <h2 className="font-bold text-2xl mb-4">You might like</h2>
           <p>This is a placeholder for widgets like trends, suggestions, etc.</p>
         </div>
@@ -83,7 +92,7 @@ export default function Home() {
           <p>This is a placeholder for widgets like trends, suggestions, etc.</p>
         </div>
         <div className="m-4 p-4 border border-gray-400 rounded-lg">
-          <h2 className="font-bold text-2xl mb-4">What’s happening</h2>
+          <h2 className="font-bold text-2xl mb-4">What&apos;s happening</h2>
           <p>This is a placeholder for widgets like trends, suggestions, etc.</p>
         </div>
       </div>
