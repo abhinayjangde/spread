@@ -1,8 +1,9 @@
 import express from "express";
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@as-integrations/express5';
-import cors from 'cors';
 import type { Express } from "express";
+import cors from 'cors';
+
 
 export async function startServer() {
     const app: Express = express();
@@ -20,6 +21,7 @@ export async function startServer() {
         },
 
     });
+
     await apolloServer.start();
 
     app.use(
