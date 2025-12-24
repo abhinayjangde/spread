@@ -25,3 +25,6 @@ https://www.npmjs.com/package/graphql-request?activeTab=dependents
 
 Graphql Codegen
 https://the-guild.dev/graphql/codegen
+
+Tanstack Query
+https://tanstack.com/query/latest/docs/framework/react/overview
