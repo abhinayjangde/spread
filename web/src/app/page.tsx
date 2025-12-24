@@ -42,6 +42,7 @@ const sidebarMenuItems: SpreadSidebarButton[] = [
 ]
 
 export default function Home() {
+
   const handleSingInWithGoogle = useCallback(async (cred: CredentialResponse) => {
     const googleToken = cred.credential;
     if (!googleToken) {
@@ -49,9 +50,13 @@ export default function Home() {
       return;
     }
     const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, { token: googleToken })
-    toast.success(`Welcome back, ${verifyGoogleToken.email}!`);
+    toast.success(`Welcome back!`);
     console.log(verifyGoogleToken);
+    if (verifyGoogleToken) {
+      localStorage.setItem("spread_token", verifyGoogleToken);
+    }
   }, []);
+
   return (
     <div className="grid grid-cols-12 h-screen w-screen px-56">
       {/* Sidebar  */}

@@ -8,6 +8,11 @@ import { User } from "../user/index.js";
 
 export async function startServer() {
     const app: Express = express();
+    app.use(cors<cors.CorsRequest>({
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+    }));
 
     const apolloServer = new ApolloServer({
         typeDefs: `
@@ -28,7 +33,6 @@ export async function startServer() {
 
     app.use(
         '/graphql',
-        cors<cors.CorsRequest>(),
         express.json(),
         expressMiddleware(apolloServer),
     );
