@@ -7,6 +7,7 @@ import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { IoBookmarkSharp } from "react-icons/io5";
 import FeedCard from "@/components/FeedCard";
+import { MdOutlineEmojiEmotions, MdOutlineImage } from "react-icons/md";
 import Image from "next/image";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useCallback } from "react";
@@ -64,11 +65,17 @@ export default function Home() {
   }, [user, queryClient]);
 
 
+  const handleSelectImage = useCallback(() => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.accept = 'image/*';
+    input.click();
+  }, [])
   return (
     <div className="grid grid-cols-12 h-screen w-screen px-56">
       {/* Sidebar  */}
       <div className="col-span-2 pt-3 relative">
-        <Link href={"/"} className="text-3xl h-fit flex justify-start items-center cursor-pointer">
+        <Link href={"/"} className="text-xl h-fit flex justify-start items-center cursor-pointer">
           <Image src="https://avatars.githubusercontent.com/u/166032907?v=4" alt="Logo" width={40} height={40}
             className="rounded-full ml-3 inline" />
           <span className="mx-2 uppercase font-bold">spread</span>
@@ -97,19 +104,40 @@ export default function Home() {
         }
       </div>
       {/* Feed  */}
-      <div className="col-span-5 h-screen overflow-y-scroll border-x border-gray-400">
+      <div className="col-span-5 h-screen overflow-y-auto no-scrollbar border-x border-gray-400">
+        <div className="grid grid-cols-12 gap-4 border-t border-gray-400 p-4">
+          <div className="col-span-1">
+            {user && <Image
+              src="https://avatars.githubusercontent.com/u/64852930?v=4" alt="Profile"
+              width={100}
+              height={100}
+              className="rounded-full m-2"
+            />}
+          </div>
+          <div className="col-span-11 px-4">
+
+            <textarea
+              className="overflow-y-auto no-scrollbar resize-none p-2 w-full focus:outline-none bg-transparent"
+              cols={4}
+              rows={3}
+              placeholder="What's happening?"
+              name="postContent"
+              id="postContent"
+            />
+            <div className="">
+              <MdOutlineImage onClick={handleSelectImage} className="text-2xl cursor-pointer text-gray-800 hover:text-black transition-all inline" />
+              <MdOutlineEmojiEmotions className="text-2xl cursor-pointer text-gray-800 hover:text-black transition-all inline mx-4" />
+              <button className="cursor-pointer float-right text-sm bg-black text-white px-4 py-1 rounded-full hover:bg-gray-800 transition-all">Post</button>
+            </div>
+          </div>
+        </div>
         <FeedCard />
         <FeedCard />
         <FeedCard />
         <FeedCard />
         <FeedCard />
         <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
+
       </div>
       {/* Widgets  */}
       <div className="col-span-4">
