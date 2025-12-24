@@ -1,6 +1,7 @@
 import axios from "axios";
 import { prisma } from "../lib/db.js";
 import { JWTService } from "../services/jwt.js";
+import type { GraphqlContext } from "../interfaces.js";
 
 interface GoogleTokenResult {
     nbf?: string;
@@ -21,6 +22,7 @@ interface GoogleTokenResult {
     kid?: string;
     typ?: string;
 }
+
 const queries = {
     verifyGoogleToken: async (parent: any, { token }: { token: string }) => {
         const googleToken = token;
@@ -55,6 +57,13 @@ const queries = {
         const userToken = JWTService.generateTokenForUser(user);
 
         return userToken;
+    },
+    getCurrentUser: async (parent: any, args: any, ctx: GraphqlContext) => {
+        const id = ctx.user?.id;
+        if (!id) return null;
+
+        const user = await prisma.user.findUnique({ where: { id } });
+        return user;
     }
 }
 

@@ -4,6 +4,8 @@ import { expressMiddleware } from '@as-integrations/express5';
 import type { Express } from "express";
 import cors from 'cors';
 import { User } from "../user/index.js";
+import type { GraphqlContext } from "../interfaces.js";
+import { JWTService } from "../services/jwt.js";
 
 
 export async function startServer() {
@@ -14,7 +16,7 @@ export async function startServer() {
         allowedHeaders: ['Content-Type', 'Authorization'],
     }));
 
-    const apolloServer = new ApolloServer({
+    const apolloServer = new ApolloServer<GraphqlContext>({
         typeDefs: `
             ${User.types}
             type Query {
@@ -34,7 +36,15 @@ export async function startServer() {
     app.use(
         '/graphql',
         express.json(),
-        expressMiddleware(apolloServer),
+        expressMiddleware(apolloServer, {
+            context: async ({ req, res }) => {
+                const token = req.headers.authorization?.split(" ")[1];
+
+                return {
+                    user: token ? JWTService.decodeToken(token) : undefined
+                }
+            }
+        }),
     );
     return app;
 }
