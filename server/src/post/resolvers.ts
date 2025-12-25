@@ -1,0 +1,45 @@
+import type { GraphqlContext } from "../interfaces.js";
+import { prisma } from "../lib/db.js";
+
+
+export interface CreatePostPayload {
+    content: string;
+    imageURL?: string;
+}
+
+const queries = {
+    getAllPosts: async (parent: any, args: any, ctx: GraphqlContext) => {
+        const posts = await prisma.post.findMany({ orderBy: { createdAt: 'desc' } });
+        return posts;
+    }
+}
+const mutations = {
+    createPost: async (parent: any, { payload }: { payload: CreatePostPayload }, ctx: GraphqlContext) => {
+        if (!ctx.user) {
+            throw new Error("You must be logged in to create a post");
+        }
+
+        const post = await prisma.post.create({
+            data: {
+                content: payload.content,
+                imageURL: payload.imageURL as string,
+                author: {
+                    connect: { id: ctx.user.id }
+                }
+            }
+        })
+        return post;
+    }
+}
+
+const extraResolvers = {
+    Post: {
+        author: async (parent: any) => {
+            return prisma.user.findUnique({
+                where: { id: parent.authorId }
+            });
+        }
+    }
+}
+
+export const resolvers = { queries, mutations, extraResolvers }

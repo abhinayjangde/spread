@@ -4,6 +4,7 @@ import { expressMiddleware } from '@as-integrations/express5';
 import type { Express } from "express";
 import cors from 'cors';
 import { User } from "../user/index.js";
+import { Post } from "../post/index.js";
 import type { GraphqlContext } from "../interfaces.js";
 import { JWTService } from "../services/jwt.js";
 
@@ -19,14 +20,27 @@ export async function startServer() {
     const apolloServer = new ApolloServer<GraphqlContext>({
         typeDefs: `
             ${User.types}
+            ${Post.types}
+
             type Query {
                 ${User.queries}
+                ${Post.queries}
+            }
+
+            type Mutation {
+                ${Post.mutations}
             }
         `,
         resolvers: {
             Query: {
-                ...User.resolvers.queries
+                ...User.resolvers.queries,
+                ...Post.resolvers.queries
             },
+            Mutation: {
+                ...Post.resolvers.mutations
+            },
+            ...Post.resolvers.extraResolvers,
+            ...User.resolvers.extraResolvers
         },
 
     });
