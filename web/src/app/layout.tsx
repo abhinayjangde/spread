@@ -5,10 +5,9 @@ import Providers from "@/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
 export const metadata: Metadata = {
-  title: "Spread",
-  description: "Inspired by X (Formally Twitter)",
+  title: "Spread - A Social Media Platform",
+  description: "Inspired by X (Formaly Twitter)",
 };
 
 export default function RootLayout({
