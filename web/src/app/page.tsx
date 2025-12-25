@@ -15,7 +15,8 @@ import { graphqlClient } from "@/clients/api";
 import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
 import { useQueryClient } from "@tanstack/react-query";
-import { useGetAllPosts } from "@/hooks/post";
+import { useCreatePost, useGetAllPosts } from "@/hooks/post";
+import { useState } from "react";
 
 interface SpreadSidebarButton {
   title: string,
@@ -49,6 +50,8 @@ export default function Home() {
   const { user } = useCurrentUser();
   const { posts = [] } = useGetAllPosts();
   const queryClient = useQueryClient();
+  const { mutate: createPost } = useCreatePost();
+  const [content, setContent] = useState("");
 
   const handleSingInWithGoogle = useCallback(async (cred: CredentialResponse) => {
     const googleToken = cred.credential;
@@ -73,6 +76,16 @@ export default function Home() {
     input.accept = 'image/*';
     input.click();
   }, [])
+
+  const handleCreatePost = useCallback(async () => {
+    if (content.trim().length === 0) {
+      toast.error("Post content cannot be empty.");
+      return;
+    }
+    createPost({ content })
+    setContent("");
+  }, [content, createPost])
+
   return (
     <div className="grid grid-cols-12 h-screen w-screen px-56">
       {/* Sidebar  */}
@@ -119,6 +132,8 @@ export default function Home() {
           <div className="col-span-11 px-4">
 
             <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               className="overflow-y-auto no-scrollbar resize-none p-2 w-full focus:outline-none bg-transparent"
               cols={4}
               rows={3}
@@ -129,7 +144,7 @@ export default function Home() {
             <div className="">
               <MdOutlineImage onClick={handleSelectImage} className="text-2xl cursor-pointer text-gray-800 hover:text-black transition-all inline" />
               <MdOutlineEmojiEmotions className="text-2xl cursor-pointer text-gray-800 hover:text-black transition-all inline mx-4" />
-              <button className="cursor-pointer float-right text-sm bg-black text-white px-4 py-1 rounded-full hover:bg-gray-800 transition-all">Post</button>
+              <button onClick={handleCreatePost} className="cursor-pointer float-right text-sm bg-black text-white px-4 py-1 rounded-full hover:bg-gray-800 transition-all">Post</button>
             </div>
           </div>
         </div>

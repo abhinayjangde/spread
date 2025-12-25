@@ -4,34 +4,26 @@ import { FiMessageSquare } from "react-icons/fi";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineFileUpload } from "react-icons/md";
+import { Post } from '@/gql/graphql';
 
-export interface Post {
-    id: string;
-    content: string;
-    imageURL?: string;
-    author: {
-        firstName: string;
-        lastName: string;
-        avatar: string;
-    }
-}
+export interface PostProps extends Post { }
 
-const FeedCard: React.FC<{ posts: Post[] }> = ({ posts }) => {
+const FeedCard: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
 
     return (
         <>
             {
                 posts?.map((post) => (<div key={post.id} className="grid grid-cols-12 gap-4 border-t border-gray-400 p-4 hover:bg-gray-100 cursor-pointer transition-all">
                     <div className="col-span-1">
-                        <Image
+                        {post.author?.avatar && <Image
                             src={post.author.avatar} alt="Profile"
                             width={100}
                             height={100}
                             className="rounded-full m-2"
-                        />
+                        />}
                     </div>
                     <div className="col-span-11 px-4">
-                        <h5 className="font-bold text-xl">{post.author.firstName} {post.author.lastName}</h5>
+                        <h5 className="font-bold text-xl">{post.author?.firstName} {post.author?.lastName}</h5>
                         <p>
                             {post.content}
                         </p>
