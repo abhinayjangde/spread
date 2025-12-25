@@ -8,7 +8,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({
 }>) => {
 
     return (
-        <div className="grid grid-cols-12 h-screen w-screen px-56">
+        <div className="grid grid-cols-12 h-screen w-screen sm:px-56">
             {/* Sidebar  */}
             <Sidebar />
 

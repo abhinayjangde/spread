@@ -39,9 +39,9 @@ export default function Home() {
       <Layout>
 
         {/* Write Post  */}
-        <div className="col-span-5 h-screen overflow-y-auto no-scrollbar border-x border-gray-400">
-          <div className="grid grid-cols-12 gap-4 border-t border-gray-400 p-4">
-            <div className="col-span-1">
+        <div className="col-span-10 sm:col-span-5 h-screen overflow-y-auto no-scrollbar border-x border-gray-400">
+          <div className="grid grid-cols-12 gap-4 border-t border-gray-400 p-3 md:p-4">
+            <div className="col-span-2 md:col-span-1">
               {user && <Image
                 src={user?.avatar} alt="Profile"
                 width={100}
@@ -49,8 +49,7 @@ export default function Home() {
                 className="rounded-full m-2"
               />}
             </div>
-            <div className="col-span-11 px-4">
-
+            <div className="col-span-10 md:col-span-11 md:px-4">
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}

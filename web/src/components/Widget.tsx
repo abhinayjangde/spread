@@ -1,3 +1,4 @@
+"use client";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
 import { useCurrentUser } from "@/hooks/user";
@@ -25,7 +26,7 @@ const Widget: React.FC = () => {
         await queryClient.invalidateQueries({ queryKey: ["current_user"] });
     }, [user, queryClient]);
     return (
-        <div className="col-span-4">
+        <div className="hidden md:block md:col-span-4">
             {
                 !user && <div className="m-4 p-4 border border-gray-400 rounded-lg">
                     <h2 className="font-bold text-2xl mb-4">New to Spread</h2>

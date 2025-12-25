@@ -14,16 +14,16 @@ const FeedCard: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
         <>
             {
                 posts?.map((post) => (<div key={post.id} className="grid grid-cols-12 gap-4 border-t border-gray-400 p-4 hover:bg-gray-100 cursor-pointer transition-all">
-                    <div className="col-span-1">
+                    <div className="col-span-2 md:col-span-1">
                         {post.author?.avatar && <Image
                             src={post.author.avatar} alt="Profile"
                             width={100}
                             height={100}
-                            className="rounded-full m-2"
+                            className="rounded-full md:m-2"
                         />}
                     </div>
-                    <div className="col-span-11 px-4">
-                        <h5 className="font-bold text-xl">{post.author?.firstName} {post.author?.lastName}</h5>
+                    <div className="col-span-10 md:col-span-11 md:px-4">
+                        <h5 className="text-sm font-bold md:text-xl">{post.author?.firstName} {post.author?.lastName}</h5>
                         <p>
                             {post.content}
                         </p>
