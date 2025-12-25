@@ -15,6 +15,7 @@ import { graphqlClient } from "@/clients/api";
 import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
 import { useQueryClient } from "@tanstack/react-query";
+import { useGetAllPosts } from "@/hooks/post";
 
 interface SpreadSidebarButton {
   title: string,
@@ -46,6 +47,7 @@ const sidebarMenuItems: SpreadSidebarButton[] = [
 
 export default function Home() {
   const { user } = useCurrentUser();
+  const { posts = [] } = useGetAllPosts();
   const queryClient = useQueryClient();
 
   const handleSingInWithGoogle = useCallback(async (cred: CredentialResponse) => {
@@ -131,12 +133,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
+
+        <FeedCard posts={posts} />
 
       </div>
       {/* Widgets  */}
