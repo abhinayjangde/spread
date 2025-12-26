@@ -32,10 +32,12 @@ export const getUserByIdQuery = `#graphql
       firstName,
       lastName,
       avatar,
+      createdAt,
       posts {
         id,
         content,
         imageURL,
+        createdAt,
         author {
           id,
           firstName,

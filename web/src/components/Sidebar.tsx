@@ -92,7 +92,7 @@ const Sidebar: React.FC = () => {
             </nav>
 
             {/* Desktop Sidebar */}
-            <div className="hidden lg:flex lg:col-span-2 xl:col-span-2 pt-3 lg:justify-end pr-4 relative h-screen sticky top-0">
+            <div className="hidden lg:flex lg:col-span-2 xl:col-span-2 pt-3 lg:justify-end pr-4 relative h-screen top-0">
                 <div className="flex flex-col h-full w-full">
                     <Link href={"/"} className="text-xl h-fit flex justify-start items-center cursor-pointer">
                         <Image
@@ -134,7 +134,7 @@ const Sidebar: React.FC = () => {
                             />
                             <div className="hidden xl:flex flex-col">
                                 <p className="font-semibold text-sm">{user?.firstName}</p>
-                                <p className="text-xs text-gray-600 truncate max-w-[120px]">{user?.email}</p>
+                                <p className="text-xs text-gray-600 truncate max-w-30">{user?.email}</p>
                             </div>
                         </div>
                     )}

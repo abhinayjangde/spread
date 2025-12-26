@@ -34,6 +34,7 @@ export type Post = {
   __typename?: 'Post';
   author?: Maybe<User>;
   content: Scalars['String']['output'];
+  createdAt?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   imageURL?: Maybe<Scalars['String']['output']>;
 };
@@ -66,6 +67,7 @@ export type QueryVerifyGoogleTokenArgs = {
 export type User = {
   __typename?: 'User';
   avatar?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
   id: Scalars['ID']['output'];

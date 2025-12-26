@@ -115,7 +115,7 @@ export default function Home() {
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="overflow-y-auto no-scrollbar resize-none p-2 w-full focus:outline-none bg-transparent text-sm sm:text-base min-h-[60px] sm:min-h-[80px]"
+                className="overflow-y-auto no-scrollbar resize-none p-2 w-full focus:outline-none bg-transparent text-sm sm:text-base min-h-15 sm:min-h-20"
                 rows={2}
                 placeholder="What's happening?"
                 name="postContent"

@@ -60,7 +60,7 @@ const UserProfile = ({
             </header>
 
             {/* Cover Photo Area */}
-            <div className="h-24 sm:h-32 md:h-40 lg:h-48 bg-gradient-to-r from-gray-200 to-gray-300" />
+            <div className="h-24 sm:h-32 md:h-40 lg:h-48 bg-linear-to-r from-gray-200 to-gray-300" />
 
             {/* Profile Info Section */}
             <div className="px-3 sm:px-4 pb-4">
@@ -89,7 +89,7 @@ const UserProfile = ({
 
                         <div className="flex items-center gap-2 text-gray-500 text-xs sm:text-sm">
                             <HiOutlineCalendar className="text-base sm:text-lg" />
-                            <span>Joined December 2025</span>
+                            <span>Joined {new Date(parseInt(user.createdAt)).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
                         </div>
 
                         <div className="flex gap-4 sm:gap-6 text-sm sm:text-base">
