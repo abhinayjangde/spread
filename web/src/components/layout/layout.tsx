@@ -8,17 +8,16 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({
 }>) => {
 
     return (
-        <div className="grid grid-cols-12 h-screen w-screen sm:px-56">
-            {/* Sidebar  */}
+        <div className="flex flex-col min-h-screen w-full lg:grid lg:grid-cols-12 lg:px-4 xl:px-24 2xl:px-56">
+            {/* Sidebar - Fixed bottom on mobile, side column on desktop */}
             <Sidebar />
 
-            {/* Feed - Dynamic Content  */}
-            <div className="col-span-10 sm:col-span-5 h-screen overflow-y-auto no-scrollbar border-x border-gray-400">
-
+            {/* Feed - Dynamic Content */}
+            <div className="flex-1 pb-16 lg:pb-0 lg:col-span-7 xl:col-span-6 h-screen overflow-y-auto no-scrollbar lg:border-x border-gray-400">
                 {children}
             </div>
 
-            {/* Widgets  */}
+            {/* Widgets - Hidden on mobile/tablet */}
             <Widget />
         </div>
     )
