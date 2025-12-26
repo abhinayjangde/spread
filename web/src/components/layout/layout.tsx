@@ -13,7 +13,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({
             <Sidebar />
 
             {/* Feed - Dynamic Content  */}
-            {children}
+            <div className="col-span-10 sm:col-span-5 h-screen overflow-y-auto no-scrollbar border-x border-gray-400">
+
+                {children}
+            </div>
 
             {/* Widgets  */}
             <Widget />

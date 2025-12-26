@@ -10,6 +10,16 @@ export const getCurrentUserQuery = `#graphql
       id,
       email,
       avatar,
-      firstName
+      firstName,
+      lastName,
+      posts {
+        id,
+        content,
+        author {
+          firstName,
+          lastName,
+          avatar
+        }
+      }
     }
 }`;

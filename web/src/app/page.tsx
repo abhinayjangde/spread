@@ -39,38 +39,37 @@ export default function Home() {
       <Layout>
 
         {/* Write Post  */}
-        <div className="col-span-10 sm:col-span-5 h-screen overflow-y-auto no-scrollbar border-x border-gray-400">
-          <div className="grid grid-cols-12 gap-4 border-t border-gray-400 p-3 md:p-4">
-            <div className="col-span-2 md:col-span-1">
-              {user && <Image
-                src={user?.avatar} alt="Profile"
-                width={100}
-                height={100}
-                className="rounded-full m-2"
-              />}
-            </div>
-            <div className="col-span-10 md:col-span-11 md:px-4">
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="overflow-y-auto no-scrollbar resize-none p-2 w-full focus:outline-none bg-transparent"
-                cols={4}
-                rows={3}
-                placeholder="What's happening?"
-                name="postContent"
-                id="postContent"
-              />
-              <div className="">
-                <MdOutlineImage onClick={handleSelectImage} className="text-2xl cursor-pointer text-gray-800 hover:text-black transition-all inline" />
-                <MdOutlineEmojiEmotions className="text-2xl cursor-pointer text-gray-800 hover:text-black transition-all inline mx-4" />
-                <button onClick={handleCreatePost} className="cursor-pointer float-right text-sm bg-black text-white px-4 py-1 rounded-full hover:bg-gray-800 transition-all">Post</button>
-              </div>
+        <div className="grid grid-cols-12 gap-4 border-t border-gray-400 p-3 md:p-4">
+          <div className="col-span-2 md:col-span-1">
+            {user && <Image
+              src={user?.avatar} alt="Profile"
+              width={100}
+              height={100}
+              className="rounded-full m-2"
+            />}
+          </div>
+          <div className="col-span-10 md:col-span-11 md:px-4">
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="overflow-y-auto no-scrollbar resize-none p-2 w-full focus:outline-none bg-transparent"
+              cols={4}
+              rows={3}
+              placeholder="What's happening?"
+              name="postContent"
+              id="postContent"
+            />
+            <div className="">
+              <MdOutlineImage onClick={handleSelectImage} className="text-2xl cursor-pointer text-gray-800 hover:text-black transition-all inline" />
+              <MdOutlineEmojiEmotions className="text-2xl cursor-pointer text-gray-800 hover:text-black transition-all inline mx-4" />
+              <button onClick={handleCreatePost} className="cursor-pointer float-right text-sm bg-black text-white px-4 py-1 rounded-full hover:bg-gray-800 transition-all">Post</button>
             </div>
           </div>
-
-          {/* Feed  */}
-          <FeedCard posts={posts} />
         </div>
+
+        {/* Feed  */}
+        <FeedCard posts={posts} />
+
       </Layout>
     </>
   );

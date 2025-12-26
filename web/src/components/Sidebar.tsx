@@ -6,38 +6,45 @@ import { FaPlusCircle, FaSearch } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { IoBookmarkSharp } from "react-icons/io5";
+import { useMemo } from 'react';
 
 interface SpreadSidebarButton {
     title: string,
-    icon: React.ReactNode
+    icon: React.ReactNode,
+    link: string
 }
 
 
-const sidebarMenuItems: SpreadSidebarButton[] = [
-    {
-        title: "Home",
-        icon: <GoHomeFill className="text-2xl" />
-    },
-    {
-        title: "Explore",
-        icon: <FaSearch className="text-2xl" />
-    },
-    {
-        title: "Notifications",
-        icon: <IoNotifications className="text-2xl" />
-    },
-    {
-        title: "Bookmarks",
-        icon: <IoBookmarkSharp className="text-2xl" />
-    },
-    {
-        title: "Profile",
-        icon: <FaUser className="text-2xl" />
-    }
-]
 
 const Sidebar: React.FC = () => {
     const { user } = useCurrentUser();
+    const sidebarMenuItems: SpreadSidebarButton[] = useMemo(() => [
+        {
+            title: "Home",
+            icon: <GoHomeFill className="text-2xl" />,
+            link: "/"
+        },
+        {
+            title: "Explore",
+            icon: <FaSearch className="text-2xl" />,
+            link: "/explore"
+        },
+        {
+            title: "Notifications",
+            icon: <IoNotifications className="text-2xl" />,
+            link: "/notifications"
+        },
+        {
+            title: "Bookmarks",
+            icon: <IoBookmarkSharp className="text-2xl" />,
+            link: "/bookmarks"
+        },
+        {
+            title: "Profile",
+            icon: <FaUser className="text-2xl" />,
+            link: `/${user?.id}`
+        }
+    ], [user?.id])
     return (
 
 
@@ -51,9 +58,11 @@ const Sidebar: React.FC = () => {
                 <div className="">
                     <ul className="mt-7">
                         {sidebarMenuItems.map((item, index) => (
-                            <li key={index} className="flex items-center gap-2 text-xl cursor-pointer p-3 hover:bg-gray-200 transition-all">
-                                {item.icon}
-                                <span className="hidden md:block">{item.title}</span>
+                            <li key={index}>
+                                <Link className="flex items-center gap-2 text-xl cursor-pointer p-3 hover:bg-gray-200 transition-all" href={item.link}>
+                                    {item.icon}
+                                    <span className="hidden md:block">{item.title}</span>
+                                </Link>
                             </li>
                         ))}
                         <li className="flex items-center gap-2 text-xl cursor-pointer p-3">
