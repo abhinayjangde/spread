@@ -42,9 +42,13 @@ const FeedCard: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
                             <span className="text-gray-500 text-xs sm:text-sm">· Just now</span>
                         </div>
 
-                        <p className="text-sm sm:text-base mt-1 break-words">
+                        <p className="text-sm sm:text-base mt-1 wrap-break-word">
                             {post.content}
                         </p>
+                        {post.imageURL && (
+                            <Image src={post.imageURL} width={500} height={300} alt="Post Image" className="mt-2 rounded-md max-h-96 object-cover" />
+                        )}
+                        { }
 
                         {/* Action Buttons */}
                         <div className="flex justify-between max-w-[280px] sm:max-w-[320px] mt-3 text-gray-500">

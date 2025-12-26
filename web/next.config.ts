@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
       {
         hostname: "lh3.googleusercontent.com",
         protocol: "https",
+      },
+      {
+        hostname: "spread-dev.s3.ap-south-1.amazonaws.com",
+        protocol: "https",
       }
     ]
   }

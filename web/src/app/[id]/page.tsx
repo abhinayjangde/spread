@@ -33,7 +33,6 @@ const UserProfile = ({
             </Layout>
         );
     }
-
     return (
         <Layout>
             {/* Sticky Header */}

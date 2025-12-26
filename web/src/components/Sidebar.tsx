@@ -59,6 +59,7 @@ const Sidebar: React.FC = () => {
                                 <span className="text-xs">{item.title}</span>
                             </Link>
                         </li>
+
                     ))}
                     {user ? (
                         <li>

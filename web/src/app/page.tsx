@@ -10,6 +10,8 @@ import FeedCard from "@/components/FeedCard";
 import { useCurrentUser } from "@/hooks/user";
 import { useCreatePost, useGetAllPosts } from "@/hooks/post";
 import { FeedSkeleton, ComposerSkeleton, MobileHeaderSkeleton } from "@/components/Shimmer";
+import { graphqlClient } from "@/clients/api";
+import { getSignedURLForPostImageQuery } from "@/graphql/query/post";
 
 export default function Home() {
 
@@ -17,22 +19,54 @@ export default function Home() {
   const { posts = [], isLoading: postsLoading } = useGetAllPosts();
   const { mutate: createPost } = useCreatePost();
   const [content, setContent] = useState("");
+  const [imageURL, setImageURL] = useState<string | null>(null);
 
+  const hanldeChangeInputFile = useCallback((input: HTMLInputElement) => {
+
+    return async (event: Event) => {
+      event.preventDefault();
+      const file: File | null | undefined = input.files?.item(0);
+
+      if (!file) return;
+      const { getSignedURLForPostImage } = await graphqlClient.request(getSignedURLForPostImageQuery, {
+        imageName: file.name,
+        imageType: file.type
+      })
+      const signedURL = getSignedURLForPostImage;
+      if (signedURL) {
+        toast.loading("uploading...", { id: "uploadPostImage" });
+        await fetch(signedURL, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type
+          },
+          body: file
+        });
+        toast.success("uploaded successfully.", { id: "uploadPostImage" });
+      }
+
+      const publicURL = signedURL.split("?")[0];
+      setImageURL(publicURL);
+
+    }
+  }, [])
   const handleSelectImage = useCallback(() => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.accept = 'image/*';
+    const handlerFn = hanldeChangeInputFile(input);
+    input.addEventListener("change", handlerFn)
     input.click();
-  }, [])
+  }, [hanldeChangeInputFile])
 
   const handleCreatePost = useCallback(async () => {
     if (content.trim().length === 0) {
       toast.error("Post content cannot be empty.");
       return;
     }
-    createPost({ content })
+    createPost({ content, imageURL })
     setContent("");
-  }, [content, createPost])
+  }, [content, imageURL, createPost])
 
 
   return (
@@ -66,7 +100,7 @@ export default function Home() {
           <ComposerSkeleton />
         ) : (
           <div className="flex gap-3 sm:gap-4 border-b border-gray-200 p-3 sm:p-4">
-            <div className="flex-shrink-0 hidden sm:block">
+            <div className="shrink-0 hidden sm:block">
               {user && (
                 <Image
                   src={user?.avatar}
@@ -87,6 +121,9 @@ export default function Home() {
                 name="postContent"
                 id="postContent"
               />
+              {imageURL && (
+                <Image src={imageURL} width={100} height={100} alt="Selected" className="mt-2 rounded-md max-h-60 object-cover" />
+              )}
               <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
                 <div className="flex items-center gap-2 sm:gap-4">
                   <MdOutlineImage
