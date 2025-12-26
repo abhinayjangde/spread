@@ -36,11 +36,11 @@ const UserProfile = ({
     return (
         <Layout>
             {/* Sticky Header */}
-            <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
+            <header className="sticky top-0 z-40 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-zinc-800">
                 <nav className="flex items-center gap-4 sm:gap-6 p-2 sm:p-3">
                     <Link
                         href="/"
-                        className="p-1.5 sm:p-2 rounded-full hover:bg-gray-200 transition-all"
+                        className="p-1.5 sm:p-2 rounded-full hover:bg-gray-200 dark:hover:bg-zinc-800 transition-all"
                     >
                         <IoIosArrowRoundBack className="text-2xl sm:text-3xl" />
                     </Link>
@@ -50,7 +50,7 @@ const UserProfile = ({
                                 <h2 className="text-base sm:text-xl font-bold truncate">
                                     {user.firstName} {user.lastName}
                                 </h2>
-                                <p className="text-gray-500 text-xs sm:text-sm">
+                                <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
                                     {user.posts.length} {user.posts.length === 1 ? 'Post' : 'Posts'}
                                 </p>
                             </>
@@ -60,7 +60,7 @@ const UserProfile = ({
             </header>
 
             {/* Cover Photo Area */}
-            <div className="h-24 sm:h-32 md:h-40 lg:h-48 bg-linear-to-r from-gray-200 to-gray-300" />
+            <div className="h-24 sm:h-32 md:h-40 lg:h-48 bg-linear-to-r from-gray-200 to-gray-300 dark:from-zinc-800 dark:to-zinc-700" />
 
             {/* Profile Info Section */}
             <div className="px-3 sm:px-4 pb-4">
@@ -71,7 +71,7 @@ const UserProfile = ({
                             src={user.avatar}
                             width={120}
                             height={120}
-                            className="rounded-full w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 border-4 border-white object-cover"
+                            className="rounded-full w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 border-4 border-white dark:border-black object-cover"
                             alt="profile-picture"
                         />
                     )}
@@ -84,10 +84,10 @@ const UserProfile = ({
                             <h2 className="text-lg sm:text-xl md:text-2xl font-bold">
                                 {user.firstName} {user.lastName}
                             </h2>
-                            <p className="text-gray-500 text-sm sm:text-base">@{user.firstName?.toLowerCase()}</p>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">@{user.firstName?.toLowerCase()}</p>
                         </div>
 
-                        <div className="flex items-center gap-2 text-gray-500 text-xs sm:text-sm">
+                        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
                             <HiOutlineCalendar className="text-base sm:text-lg" />
                             <span>Joined {new Date(parseInt(user.createdAt)).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
                         </div>
@@ -95,11 +95,11 @@ const UserProfile = ({
                         <div className="flex gap-4 sm:gap-6 text-sm sm:text-base">
                             <div>
                                 <span className="font-bold">0</span>
-                                <span className="text-gray-500 ml-1">Following</span>
+                                <span className="text-gray-500 dark:text-gray-400 ml-1">Following</span>
                             </div>
                             <div>
                                 <span className="font-bold">0</span>
-                                <span className="text-gray-500 ml-1">Followers</span>
+                                <span className="text-gray-500 dark:text-gray-400 ml-1">Followers</span>
                             </div>
                         </div>
                     </div>
@@ -107,14 +107,14 @@ const UserProfile = ({
             </div>
 
             {/* Tabs */}
-            <div className="flex border-b border-gray-200">
-                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center hover:bg-gray-100 transition-all border-b-2 border-black">
+            <div className="flex border-b border-gray-200 dark:border-zinc-800">
+                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all border-b-2 border-black dark:border-white">
                     Posts
                 </button>
-                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center text-gray-500 hover:bg-gray-100 transition-all">
+                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all">
                     Replies
                 </button>
-                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center text-gray-500 hover:bg-gray-100 transition-all">
+                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all">
                     Likes
                 </button>
             </div>

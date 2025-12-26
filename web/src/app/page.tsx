@@ -76,7 +76,7 @@ export default function Home() {
         {userLoading ? (
           <MobileHeaderSkeleton />
         ) : (
-          <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200 lg:hidden">
+          <header className="sticky top-0 z-40 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-zinc-800 lg:hidden">
             <div className="flex items-center justify-between p-3">
               {user ? (
                 <Image
@@ -87,7 +87,7 @@ export default function Home() {
                   className="rounded-full"
                 />
               ) : (
-                <div className="w-8 h-8 bg-gray-200 rounded-full" />
+                <div className="w-8 h-8 bg-gray-200 dark:bg-zinc-800 rounded-full" />
               )}
               <h1 className="font-bold text-lg">Home</h1>
               <div className="w-8" />
@@ -99,7 +99,7 @@ export default function Home() {
         {userLoading ? (
           <ComposerSkeleton />
         ) : (
-          <div className="flex gap-3 sm:gap-4 border-b border-gray-200 p-3 sm:p-4">
+          <div className="flex gap-3 sm:gap-4 border-b border-gray-200 dark:border-zinc-800 p-3 sm:p-4">
             <div className="shrink-0 hidden sm:block">
               {user && (
                 <Image
@@ -115,7 +115,7 @@ export default function Home() {
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="overflow-y-auto no-scrollbar resize-none p-2 w-full focus:outline-none bg-transparent text-sm sm:text-base min-h-15 sm:min-h-20"
+                className="overflow-y-auto no-scrollbar resize-none p-2 w-full focus:outline-none bg-transparent text-sm sm:text-base min-h-15 sm:min-h-20 placeholder-gray-500 dark:placeholder-gray-400"
                 rows={2}
                 placeholder="What's happening?"
                 name="postContent"
@@ -124,19 +124,19 @@ export default function Home() {
               {imageURL && (
                 <Image src={imageURL} width={100} height={100} alt="Selected" className="mt-2 rounded-md max-h-60 object-cover" />
               )}
-              <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-zinc-800">
                 <div className="flex items-center gap-2 sm:gap-4">
                   <MdOutlineImage
                     onClick={handleSelectImage}
-                    className="text-xl sm:text-2xl cursor-pointer text-gray-600 hover:text-blue-500 transition-all"
+                    className="text-xl sm:text-2xl cursor-pointer text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-all"
                   />
                   <MdOutlineEmojiEmotions
-                    className="text-xl sm:text-2xl cursor-pointer text-gray-600 hover:text-blue-500 transition-all"
+                    className="text-xl sm:text-2xl cursor-pointer text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-all"
                   />
                 </div>
                 <button
                   onClick={handleCreatePost}
-                  className="cursor-pointer text-sm sm:text-base bg-black text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-full hover:bg-gray-800 transition-all font-medium disabled:opacity-50"
+                  className="cursor-pointer text-sm sm:text-base bg-black dark:bg-white text-white dark:text-black px-4 sm:px-6 py-1.5 sm:py-2 rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-all font-medium disabled:opacity-50"
                   disabled={!content.trim()}
                 >
                   Post

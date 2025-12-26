@@ -16,7 +16,7 @@ const FeedCard: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
             {posts?.map((post) => (
                 <div
                     key={post.id}
-                    className="flex gap-3 sm:gap-4 border-t border-gray-400 p-3 sm:p-4 hover:bg-gray-50 transition-all cursor-pointer"
+                    className="flex gap-3 sm:gap-4 border-t border-gray-200 dark:border-zinc-800 p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-zinc-900/50 transition-all cursor-pointer"
                 >
                     {/* Avatar */}
                     <div className="shrink-0">
@@ -39,7 +39,7 @@ const FeedCard: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
                             <h5 className="text-sm sm:text-base font-bold truncate">
                                 {post.author?.firstName} {post.author?.lastName}
                             </h5>
-                            <span className="text-gray-500 text-xs sm:text-sm">
+                            <span className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
                                 · {(() => {
                                     const now = Date.now();
                                     const createdAt = Number(post.createdAt);
@@ -68,20 +68,20 @@ const FeedCard: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
                         { }
 
                         {/* Action Buttons */}
-                        <div className="flex justify-between max-w-70 sm:max-w-[320px] mt-3 text-gray-500">
-                            <button className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full hover:bg-blue-50 hover:text-blue-500 transition-all group">
+                        <div className="flex justify-between max-w-70 sm:max-w-[320px] mt-3 text-gray-500 dark:text-gray-400">
+                            <button className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:text-blue-500 transition-all group">
                                 <FiMessageSquare className="text-base sm:text-lg" />
                                 <span className="text-xs sm:text-sm hidden xs:inline">0</span>
                             </button>
-                            <button className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full hover:bg-green-50 hover:text-green-500 transition-all group">
+                            <button className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full hover:bg-green-50 dark:hover:bg-green-500/10 hover:text-green-500 transition-all group">
                                 <AiOutlineRetweet className="text-base sm:text-lg" />
                                 <span className="text-xs sm:text-sm hidden xs:inline">0</span>
                             </button>
-                            <button className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full hover:bg-red-50 hover:text-red-500 transition-all group">
+                            <button className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 transition-all group">
                                 <FaRegHeart className="text-base sm:text-lg" />
                                 <span className="text-xs sm:text-sm hidden xs:inline">0</span>
                             </button>
-                            <button className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full hover:bg-blue-50 hover:text-blue-500 transition-all group">
+                            <button className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:text-blue-500 transition-all group">
                                 <MdOutlineFileUpload className="text-base sm:text-lg" />
                             </button>
                         </div>

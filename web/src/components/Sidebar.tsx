@@ -7,6 +7,8 @@ import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { IoBookmarkSharp } from "react-icons/io5";
 import { useMemo } from 'react';
+import { useTheme } from '@/context/ThemeContext';
+import { IoMoon, IoSunny } from "react-icons/io5";
 
 interface SpreadSidebarButton {
     title: string,
@@ -16,6 +18,8 @@ interface SpreadSidebarButton {
 
 const Sidebar: React.FC = () => {
     const { user } = useCurrentUser();
+    const { theme, toggleTheme } = useTheme();
+
     const sidebarMenuItems: SpreadSidebarButton[] = useMemo(() => [
         {
             title: "Home",
@@ -47,12 +51,12 @@ const Sidebar: React.FC = () => {
     return (
         <>
             {/* Mobile Bottom Navigation */}
-            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 lg:hidden">
+            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-black border-t border-gray-200 dark:border-zinc-800 lg:hidden">
                 <ul className="flex justify-around items-center py-2">
                     {sidebarMenuItems.slice(0, 4).map((item, index) => (
                         <li key={index}>
                             <Link
-                                className="flex flex-col items-center gap-1 p-2 text-gray-700 hover:text-black transition-all"
+                                className="flex flex-col items-center gap-1 p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-all"
                                 href={item.link}
                             >
                                 {item.icon}
@@ -64,7 +68,7 @@ const Sidebar: React.FC = () => {
                     {user ? (
                         <li>
                             <Link
-                                className="flex flex-col items-center gap-1 p-2 text-gray-700 hover:text-black transition-all"
+                                className="flex flex-col items-center gap-1 p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-all"
                                 href={`/${user?.id}`}
                             >
                                 <Image
@@ -80,7 +84,7 @@ const Sidebar: React.FC = () => {
                     ) : (
                         <li>
                             <Link
-                                className="flex flex-col items-center gap-1 p-2 text-gray-700 hover:text-black transition-all"
+                                className="flex flex-col items-center gap-1 p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-all"
                                 href="/"
                             >
                                 <FaUser className="text-xl" />
@@ -109,7 +113,7 @@ const Sidebar: React.FC = () => {
                             {sidebarMenuItems.map((item, index) => (
                                 <li key={index}>
                                     <Link
-                                        className="flex items-center gap-3 text-lg xl:text-xl cursor-pointer p-3 rounded-full hover:bg-gray-200 transition-all w-fit"
+                                        className="flex items-center gap-3 text-lg xl:text-xl cursor-pointer p-3 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all w-fit"
                                         href={item.link}
                                     >
                                         {item.icon}
@@ -118,13 +122,30 @@ const Sidebar: React.FC = () => {
                                 </li>
                             ))}
                         </ul>
-                        <button className="cursor-pointer mt-4 text-lg xl:text-xl p-3 xl:px-8 w-fit ml-1 bg-black text-white xl:py-2 rounded-full hover:bg-gray-800 transition-all">
+                        <button className="cursor-pointer mt-4 text-lg xl:text-xl p-3 xl:px-8 w-fit ml-1 bg-black dark:bg-white text-white dark:text-black xl:py-2 rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-all">
                             <FaPlusCircle className="xl:hidden text-xl" />
                             <span className="hidden xl:block">Post</span>
                         </button>
                     </div>
+
+                    {/* Theme Toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        className="mb-4 flex items-center gap-3 p-3 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all w-fit cursor-pointer"
+                        aria-label="Toggle theme"
+                    >
+                        {theme === "dark" ? (
+                            <IoSunny className="text-xl lg:text-2xl text-yellow-500" />
+                        ) : (
+                            <IoMoon className="text-xl lg:text-2xl text-gray-700" />
+                        )}
+                        <span className="hidden xl:block text-sm">
+                            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                        </span>
+                    </button>
+
                     {user && (
-                        <div className="mb-4 flex gap-3 py-2 px-2 rounded-full hover:bg-gray-200 transition-all cursor-pointer items-center">
+                        <div className="mb-4 flex gap-3 py-2 px-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all cursor-pointer items-center">
                             <Image
                                 src={user?.avatar || "https://avatars.githubusercontent.com/u/166032907?v=4"}
                                 alt="User Avatar"
@@ -134,7 +155,7 @@ const Sidebar: React.FC = () => {
                             />
                             <div className="hidden xl:flex flex-col">
                                 <p className="font-semibold text-sm">{user?.firstName}</p>
-                                <p className="text-xs text-gray-600 truncate max-w-30">{user?.email}</p>
+                                <p className="text-xs text-gray-600 dark:text-gray-400 truncate max-w-30">{user?.email}</p>
                             </div>
                         </div>
                     )}
