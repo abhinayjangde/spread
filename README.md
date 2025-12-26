@@ -10,6 +10,7 @@ https://www.npmjs.com/package/jsonwebtoken
 https://oauth2.googleapis.com/tokeninfo?id_token=yourtoken
 
 AXIOS
+AWS S3
 
 
 ## Web
