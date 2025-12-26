@@ -1,7 +1,7 @@
 "use client";
 import FeedCard from "@/components/FeedCard";
 import Layout from "@/components/layout/layout";
-import { useCurrentUser } from "@/hooks/user";
+import { useCurrentUser, useUserById } from "@/hooks/user";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -12,7 +12,7 @@ const UserProfile = ({
     params: Promise<{ id: string }>
 }) => {
     const [id, setId] = useState<string>("");
-    const { user } = useCurrentUser();
+    const { user } = useUserById(id);
     useEffect(() => {
         const getId = async () => {
             const { id } = await params;
@@ -32,7 +32,7 @@ const UserProfile = ({
                     </div>
                 </nav>
             </div>
-            <div className="p-4 mt-12 border-b bg-gray-100 border-b-gray-300">
+            <div className="p-4 mt-12 bg-gray-100">
                 {
                     user && <Image
                         src={user.avatar}

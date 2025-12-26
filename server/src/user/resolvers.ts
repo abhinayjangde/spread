@@ -65,6 +65,10 @@ const queries = {
 
         const user = await prisma.user.findUnique({ where: { id } });
         return user;
+    },
+    getUserById: async (parent: any, { id }: { id: string }, ctx: GraphqlContext) => {
+        const user = await prisma.user.findUnique({ where: { id } });
+        return user;
     }
 }
 

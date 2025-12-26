@@ -23,3 +23,23 @@ export const getCurrentUserQuery = `#graphql
       }
     }
 }`;
+
+export const getUserByIdQuery = `#graphql
+  query GetUserById($id: ID!) {
+    getUserById(id: $id) {
+      id,
+      firstName,
+      lastName,
+      avatar,
+      posts {
+        id,
+        content,
+        author {
+          id,
+          firstName,
+          lastName,
+          avatar
+        }
+      }
+    }
+}`;
