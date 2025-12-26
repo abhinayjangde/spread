@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { HiOutlineCalendar } from "react-icons/hi";
+import { ProfileSkeleton, FeedSkeleton } from "@/components/Shimmer";
 
 const UserProfile = ({
     params,
@@ -14,7 +15,7 @@ const UserProfile = ({
     params: Promise<{ id: string }>
 }) => {
     const [id, setId] = useState<string>("");
-    const { user } = useUserById(id);
+    const { user, isLoading } = useUserById(id);
 
     useEffect(() => {
         const getId = async () => {
@@ -23,6 +24,15 @@ const UserProfile = ({
         }
         getId();
     }, [id, params]);
+
+    // Show skeleton while loading
+    if (isLoading || !id) {
+        return (
+            <Layout>
+                <ProfileSkeleton />
+            </Layout>
+        );
+    }
 
     return (
         <Layout>
