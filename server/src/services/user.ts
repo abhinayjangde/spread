@@ -58,6 +58,18 @@ export class UserService {
         return userToken;
     }
     public static async followUser(from: string, to: string) {
+        // Check if already following
+        const existingFollow = await prisma.follow.findUnique({
+            where: {
+                followerId_followingId: { followerId: from, followingId: to }
+            }
+        });
+
+        if (existingFollow) {
+            // Already following, return existing record
+            return existingFollow;
+        }
+
         return await prisma.follow.create({
             data: {
                 follower: {

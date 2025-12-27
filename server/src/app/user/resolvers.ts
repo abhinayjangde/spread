@@ -21,6 +21,20 @@ const queries = {
     }
 }
 
+
+const mutations = {
+    followUser: async (parent: any, { to }: { to: string }, ctx: GraphqlContext) => {
+        if (!ctx.user || !ctx.user.id) throw new Error("You are not authenticated!");
+        await UserService.followUser(ctx.user.id, to)
+        return true;
+    },
+    unfollowUser: async (parent: any, { to }: { to: string }, ctx: GraphqlContext) => {
+        if (!ctx.user || !ctx.user.id) throw new Error("You are not authenticated!");
+        await UserService.unfollowUser(ctx.user.id, to)
+        return true
+    }
+}
+
 const extraResolvers = {
     User: {
         posts: async (parent: User) => {
@@ -40,19 +54,6 @@ const extraResolvers = {
             });
             return follows.map(f => f.following);
         }
-    }
-}
-
-const mutations = {
-    followUser: async (parent: any, { to }: { to: string }, ctx: GraphqlContext) => {
-        if (!ctx.user || !ctx.user.id) throw new Error("You are not authenticated!");
-        await UserService.followUser(ctx.user.id, to)
-        return true;
-    },
-    unfollowUser: async (parent: any, { to }: { to: string }, ctx: GraphqlContext) => {
-        if (!ctx.user || !ctx.user.id) throw new Error("You are not authenticated!");
-        await UserService.unfollowUser(ctx.user.id, to)
-        return true
     }
 }
 

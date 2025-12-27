@@ -12,6 +12,18 @@ export const getCurrentUserQuery = `#graphql
       avatar,
       firstName,
       lastName,
+      followers {
+        id,
+        firstName,
+        lastName,
+        avatar
+      },
+      following {
+        id,
+        firstName,
+        lastName,
+        avatar
+      },
       posts {
         id,
         content,
@@ -33,6 +45,18 @@ export const getUserByIdQuery = `#graphql
       lastName,
       avatar,
       createdAt,
+      followers {
+        id,
+        firstName,
+        lastName,
+        avatar
+      },
+      following {
+        id,
+        firstName,
+        lastName,
+        avatar
+      },
       posts {
         id,
         content,

@@ -1,13 +1,16 @@
 "use client";
 import FeedCard from "@/components/FeedCard";
 import Layout from "@/components/layout/layout";
-import { useUserById } from "@/hooks/user";
+import { useCurrentUser, useUserById } from "@/hooks/user";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { HiOutlineCalendar } from "react-icons/hi";
 import { ProfileSkeleton, FeedSkeleton } from "@/components/Shimmer";
+import { graphqlClient } from "@/clients/api";
+import { followUserMutation, unfollowUserMutation } from "@/graphql/mutations/user";
+import { useQueryClient } from "@tanstack/react-query";
 
 const UserProfile = ({
     params,
@@ -16,6 +19,8 @@ const UserProfile = ({
 }) => {
     const [id, setId] = useState<string>("");
     const { user, isLoading } = useUserById(id);
+    const { user: currentUser } = useCurrentUser();
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         const getId = async () => {
@@ -25,6 +30,25 @@ const UserProfile = ({
         getId();
     }, [id, params]);
 
+    const amIFollowing = currentUser?.following?.some((followedUser: { id: string; }) => followedUser.id === user?.id);
+
+    // Follow Handler
+    const handleFollowUser = useCallback(async () => {
+        if (!user?.id) return;
+        await graphqlClient.request(followUserMutation, { to: user?.id });
+        await queryClient.invalidateQueries({ queryKey: ['current_user'] });
+        await queryClient.invalidateQueries({ queryKey: ['user_by_id', user?.id] });
+    }, [user?.id, queryClient]);
+
+    // Unfollow Handler
+    const handleUnfollowUser = useCallback(async () => {
+        if (!user?.id) return;
+        await graphqlClient.request(unfollowUserMutation, { to: user?.id });
+        await queryClient.invalidateQueries({ queryKey: ['current_user'] });
+        await queryClient.invalidateQueries({ queryKey: ['user_by_id', user?.id] });
+    }, [user?.id, queryClient]);
+
+
     // Show skeleton while loading
     if (isLoading || !id) {
         return (
@@ -33,6 +57,7 @@ const UserProfile = ({
             </Layout>
         );
     }
+
     return (
         <Layout>
             {/* Sticky Header */}
@@ -81,10 +106,39 @@ const UserProfile = ({
                 {user && (
                     <div className="space-y-2 sm:space-y-3">
                         <div>
-                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold">
-                                {user.firstName} {user.lastName}
-                            </h2>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">@{user.firstName?.toLowerCase()}</p>
+                            <div className="flex justify-between">
+
+                                <h2 className="text-lg sm:text-xl md:text-2xl font-bold">
+                                    {user.firstName} {user.lastName}
+                                </h2>
+                                {currentUser?.id !== user.id && (
+                                    <>
+                                        {
+                                            amIFollowing ?
+                                                (
+                                                    <button onPointerOver={() => {
+                                                        const unfollowBtn = document.getElementById("unfollow");
+                                                        unfollowBtn?.addEventListener("pointerout", () => {
+                                                            if (unfollowBtn) {
+                                                                unfollowBtn.textContent = "Following";
+                                                            }
+                                                        });
+                                                        if (unfollowBtn) {
+                                                            unfollowBtn.textContent = "Unfollow";
+                                                        }
+                                                    }} className="w-24 px-2 font-semibold cursor-pointer hover:bg-gray-300 transition-all rounded-full dark:bg-gray-100 text-gray-900" id="unfollow"
+                                                        onClick={handleUnfollowUser}
+                                                    >Following</button>
+                                                )
+
+                                                : (
+                                                    <button onClick={handleFollowUser} className="px-2 font-semibold cursor-pointer hover:bg-gray-300 transition-all rounded-full dark:bg-gray-100 text-gray-900">Follow</button>
+                                                )
+                                        }
+                                    </>
+                                )}
+                            </div>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">@{user.firstName?.toLowerCase()}{user.lastName?.toLowerCase()}</p>
                         </div>
 
                         <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
@@ -94,11 +148,11 @@ const UserProfile = ({
 
                         <div className="flex gap-4 sm:gap-6 text-sm sm:text-base">
                             <div>
-                                <span className="font-bold">0</span>
+                                <span className="font-bold">{user.following.length || 0}</span>
                                 <span className="text-gray-500 dark:text-gray-400 ml-1">Following</span>
                             </div>
                             <div>
-                                <span className="font-bold">0</span>
+                                <span className="font-bold">{user.followers.length || 0}</span>
                                 <span className="text-gray-500 dark:text-gray-400 ml-1">Followers</span>
                             </div>
                         </div>
@@ -108,13 +162,13 @@ const UserProfile = ({
 
             {/* Tabs */}
             <div className="flex border-b border-gray-200 dark:border-zinc-800">
-                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all border-b-2 border-black dark:border-white">
+                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all border-b-2 border-black dark:border-white cursor-pointer">
                     Posts
                 </button>
-                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all">
+                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all cursor-pointer">
                     Replies
                 </button>
-                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all">
+                <button className="flex-1 py-3 sm:py-4 text-sm sm:text-base font-medium text-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all cursor-pointer">
                     Likes
                 </button>
             </div>
