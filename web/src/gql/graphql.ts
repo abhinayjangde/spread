@@ -23,11 +23,23 @@ export type CreatePostData = {
 export type Mutation = {
   __typename?: 'Mutation';
   createPost?: Maybe<Post>;
+  followUser: Scalars['Boolean']['output'];
+  unfollowUser: Scalars['Boolean']['output'];
 };
 
 
 export type MutationCreatePostArgs = {
   payload: CreatePostData;
+};
+
+
+export type MutationFollowUserArgs = {
+  to: Scalars['ID']['input'];
+};
+
+
+export type MutationUnfollowUserArgs = {
+  to: Scalars['ID']['input'];
 };
 
 export type Post = {
@@ -70,6 +82,8 @@ export type User = {
   createdAt?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
+  followers?: Maybe<Array<Maybe<User>>>;
+  following?: Maybe<Array<Maybe<User>>>;
   id: Scalars['ID']['output'];
   lastName?: Maybe<Scalars['String']['output']>;
   posts?: Maybe<Array<Maybe<Post>>>;

@@ -3,8 +3,8 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@as-integrations/express5';
 import type { Express } from "express";
 import cors from 'cors';
-import { User } from "../user/index.js";
-import { Post } from "../post/index.js";
+import { User } from "./user/index.js";
+import { Post } from "./post/index.js";
 import type { GraphqlContext } from "../interfaces.js";
 import { JWTService } from "../services/jwt.js";
 
@@ -29,6 +29,7 @@ export async function startServer() {
 
             type Mutation {
                 ${Post.mutations}
+                ${User.mutations}
             }
         `,
         resolvers: {
@@ -37,7 +38,8 @@ export async function startServer() {
                 ...Post.resolvers.queries
             },
             Mutation: {
-                ...Post.resolvers.mutations
+                ...Post.resolvers.mutations,
+                ...User.resolvers.mutations
             },
             ...Post.resolvers.extraResolvers,
             ...User.resolvers.extraResolvers

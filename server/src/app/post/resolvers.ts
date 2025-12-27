@@ -1,8 +1,8 @@
-import type { GraphqlContext } from "../interfaces.js";
-import { prisma } from "../lib/db.js";
+import type { GraphqlContext } from "../../interfaces.js";
+import { prisma } from "../../lib/db.js";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import env from "../config/env.js";
+import env from "../../config/env.js";
 
 export interface CreatePostPayload {
     content: string;

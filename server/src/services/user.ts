@@ -1,8 +1,6 @@
 import axios from "axios";
 import { prisma } from "../lib/db.js";
-import { JWTService } from "../services/jwt.js";
-import type { GraphqlContext } from "../interfaces.js";
-import type { User } from "../generated/prisma/client.js";
+import { JWTService } from "./jwt.js";
 
 interface GoogleTokenResult {
     nbf?: string;
@@ -24,8 +22,8 @@ interface GoogleTokenResult {
     typ?: string;
 }
 
-const queries = {
-    verifyGoogleToken: async (parent: any, { token }: { token: string }) => {
+export class UserService {
+    public static async verifyGoogleToken(token: string): Promise<string> {
         const googleToken = token;
         const googleOAuthURL = new URL('https://oauth2.googleapis.com/tokeninfo');
         googleOAuthURL.searchParams.append('id_token', googleToken);
@@ -58,28 +56,24 @@ const queries = {
         const userToken = JWTService.generateTokenForUser(user);
 
         return userToken;
-    },
-    getCurrentUser: async (parent: any, args: any, ctx: GraphqlContext) => {
-        const id = ctx.user?.id;
-        if (!id) return null;
-
-        const user = await prisma.user.findUnique({ where: { id } });
-        return user;
-    },
-    getUserById: async (parent: any, { id }: { id: string }, ctx: GraphqlContext) => {
-        const user = await prisma.user.findUnique({ where: { id } });
-        return user;
     }
-}
-
-const extraResolvers = {
-    User: {
-        posts: async (parent: User) => {
-            return await prisma.post.findMany({ where: { authorId: parent.id } });
-        }
+    public static async followUser(from: string, to: string) {
+        return await prisma.follow.create({
+            data: {
+                follower: {
+                    connect: { id: from }
+                },
+                following: {
+                    connect: { id: to }
+                }
+            }
+        });
     }
-}
-export const resolvers = {
-    queries,
-    extraResolvers
+    public static async unfollowUser(from: string, to: string) {
+        return await prisma.follow.delete({
+            where: {
+                followerId_followingId: { followerId: from, followingId: to }
+            }
+        })
+    }
 }
