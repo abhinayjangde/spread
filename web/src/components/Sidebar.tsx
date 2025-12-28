@@ -53,7 +53,7 @@ const Sidebar: React.FC = () => {
             {/* Mobile Bottom Navigation */}
             <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-black border-t border-gray-200 dark:border-zinc-800 lg:hidden">
                 <ul className="flex justify-around items-center py-2">
-                    {sidebarMenuItems.slice(0, 4).map((item, index) => (
+                    {sidebarMenuItems.slice(0, 4).filter(item => !['Notifications', 'Bookmarks'].includes(item.title) || user).map((item, index) => (
                         <li key={index}>
                             <Link
                                 className="flex flex-col items-center gap-1 p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-all"
@@ -110,7 +110,7 @@ const Sidebar: React.FC = () => {
                     </Link>
                     <div className="flex-1">
                         <ul className="mt-7">
-                            {sidebarMenuItems.map((item, index) => (
+                            {sidebarMenuItems.filter(item => !['Profile', 'Notifications', 'Bookmarks'].includes(item.title) || user).map((item, index) => (
                                 <li key={index}>
                                     <Link
                                         className="flex items-center gap-3 text-lg xl:text-xl cursor-pointer p-3 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all w-fit"
@@ -122,10 +122,12 @@ const Sidebar: React.FC = () => {
                                 </li>
                             ))}
                         </ul>
-                        <button className="cursor-pointer mt-4 text-lg xl:text-xl p-3 xl:px-8 w-fit ml-1 bg-black dark:bg-white text-white dark:text-black xl:py-2 rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-all">
-                            <FaPlusCircle className="xl:hidden text-xl" />
-                            <span className="hidden xl:block">Post</span>
-                        </button>
+                        {user && (
+                            <button className="cursor-pointer mt-4 text-lg xl:text-xl p-3 xl:px-8 w-fit ml-1 bg-black dark:bg-white text-white dark:text-black xl:py-2 rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-all">
+                                <FaPlusCircle className="xl:hidden text-xl" />
+                                <span className="hidden xl:block">Post</span>
+                            </button>
+                        )}
                     </div>
 
                     {/* Theme Toggle */}

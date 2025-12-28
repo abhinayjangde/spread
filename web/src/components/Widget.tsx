@@ -23,7 +23,7 @@ const Widget: React.FC = () => {
             return;
         }
         const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, { token: googleToken })
-        toast.success(`${user?.firstName ? `Welcome back, ${user.firstName}!` : "Your account has been created."}`);
+        toast.success(`${user?.firstName ? `Welcome back, ${user.firstName}!` : "Successfully signed in with Google!"}`);
         console.log(verifyGoogleToken);
         if (verifyGoogleToken) {
             localStorage.setItem("spread_token", verifyGoogleToken);
@@ -88,7 +88,7 @@ const Widget: React.FC = () => {
                                                     <p className="text-sm text-gray-600 dark:text-gray-400">@{u.firstName.toLowerCase()}{u.lastName?.toLowerCase()}</p>
                                                 </div>
                                             </div>
-                                            <Link href={`/${u.id}`} className="text-blue-500 hover:bg-gray-200 dark:bg-white dark:text-black rounded-full h-fit py-1 px-3">Find</Link>
+                                            <Link href={`/${u.id}`} className="font-semibold cursor-pointer hover:bg-gray-300 transition-all rounded-full bg-gray-200 dark:bg-gray-100 text-gray-900 h-fit py-1 px-3">Find</Link>
 
                                         </div>)
                                     }

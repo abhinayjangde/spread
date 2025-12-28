@@ -4,10 +4,12 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import env from "../../config/env.js";
 import { redis } from "../../lib/redis.js";
+import { PostService } from "../../services/post.js";
 
 export interface CreatePostPayload {
     content: string;
     imageURL?: string;
+    userId: string;
 }
 
 const s3Client = new S3Client({
@@ -20,12 +22,12 @@ const s3Client = new S3Client({
 
 const queries = {
     getAllPosts: async (parent: any, args: any, ctx: GraphqlContext) => {
-        const cachedPosts = await redis.get('allPosts');
-        if (cachedPosts) {
-            return JSON.parse(cachedPosts);
-        }
+        // const cachedPosts = await redis.get('allPosts');
+        // if (cachedPosts) {
+        //     return JSON.parse(cachedPosts);
+        // }
         const posts = await prisma.post.findMany({ orderBy: { createdAt: 'desc' } });
-        await redis.set('allPosts', JSON.stringify(posts));
+        // await redis.set('allPosts', JSON.stringify(posts));
         return posts;
     },
     getSignedURLForPostImage: async (parent: any, { imageName, imageType }: { imageName: string, imageType: string }, ctx: GraphqlContext) => {
@@ -60,17 +62,11 @@ const mutations = {
             throw new Error("You must be logged in to create a post");
         }
 
-        const post = await prisma.post.create({
-            data: {
-                content: payload.content,
-                imageURL: payload.imageURL as string,
-                author: {
-                    connect: { id: ctx.user.id }
-                }
-            }
+        return await PostService.createPost({
+            content: payload.content,
+            imageURL: payload.imageURL,
+            userId: ctx.user.id
         })
-        await redis.del('allPosts');
-        return post;
     }
 }
 

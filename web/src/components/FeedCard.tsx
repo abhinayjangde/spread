@@ -63,7 +63,7 @@ const FeedCard: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
                             {post.content}
                         </p>
                         {post.imageURL && (
-                            <Image src={post.imageURL} width={500} height={300} alt="Post Image" className="mt-2 rounded-md max-h-96 object-cover" />
+                            <Image src={post.imageURL} width={500} height={300} alt="Post Image" className="mt-2 rounded-md max-h-96 w-auto object-cover" />
                         )}
                         { }
 

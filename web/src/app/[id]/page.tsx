@@ -128,7 +128,7 @@ const UserProfile = ({
                                                         if (unfollowBtn) {
                                                             unfollowBtn.textContent = "Unfollow";
                                                         }
-                                                    }} className="w-24 px-2 font-semibold cursor-pointer hover:bg-gray-300 transition-all rounded-full dark:bg-gray-100 text-gray-900" id="unfollow"
+                                                    }} className="w-24 px-2 font-semibold cursor-pointer hover:bg-gray-300 transition-all rounded-full dark:bg-gray-100 bg-gray-200 text-gray-900" id="unfollow"
                                                         onClick={handleUnfollowUser}
                                                     >Following</button>
                                                 )

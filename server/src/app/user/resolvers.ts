@@ -41,10 +41,13 @@ const mutations = {
 const extraResolvers = {
     User: {
         posts: async (parent: User) => {
-            return await prisma.post.findMany({
+
+            const posts = await prisma.post.findMany({
                 where: { authorId: parent.id },
                 orderBy: { createdAt: 'desc' }
             });
+
+            return posts;
         },
         followers: async (parent: User) => {
             const follows = await prisma.follow.findMany({

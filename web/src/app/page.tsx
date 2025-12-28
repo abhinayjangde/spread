@@ -99,7 +99,7 @@ export default function Home() {
         {userLoading ? (
           <ComposerSkeleton />
         ) : (
-          <div className="flex gap-3 sm:gap-4 border-b border-gray-200 dark:border-zinc-800 p-3 sm:p-4">
+          user && (<div className="flex gap-3 sm:gap-4 border-b border-gray-200 dark:border-zinc-800 p-3 sm:p-4">
             <div className="shrink-0 hidden sm:block">
               {user && (
                 <Image
@@ -143,7 +143,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-          </div>
+          </div>)
         )}
 
         {/* Feed */}
