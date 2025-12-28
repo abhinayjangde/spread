@@ -23,7 +23,7 @@ const Widget: React.FC = () => {
             return;
         }
         const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, { token: googleToken })
-        toast.success(`Welcome back! ${user.firstName}`);
+        toast.success(`${user?.firstName ? `Welcome back, ${user.firstName}!` : "Your account has been created."}`);
         console.log(verifyGoogleToken);
         if (verifyGoogleToken) {
             localStorage.setItem("spread_token", verifyGoogleToken);
@@ -68,7 +68,7 @@ const Widget: React.FC = () => {
 
                     {/* Recommended Users Card */}
                     {
-                        user.recommendedUsers.length > 0 && (
+                        user?.recommendedUsers.length > 0 && (
                             <div className="m-3 xl:m-4 p-3 xl:p-4 border border-gray-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900">
                                 <h2 className="font-bold text-lg xl:text-2xl mb-3 xl:mb-4">You may know them</h2>
 
@@ -76,7 +76,7 @@ const Widget: React.FC = () => {
                                 <div>
                                     {user.recommendedUsers.map((u: User) =>
                                         <div
-                                            className="flex justify-between items-center gap-4"
+                                            className="flex justify-between items-center gap-4 py-4 border-t border-gray-200 dark:border-zinc-800"
                                             key={u.id}
                                         >
                                             <div className="flex gap-4">

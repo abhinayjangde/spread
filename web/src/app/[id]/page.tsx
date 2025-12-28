@@ -11,6 +11,7 @@ import { ProfileSkeleton, FeedSkeleton } from "@/components/Shimmer";
 import { graphqlClient } from "@/clients/api";
 import { followUserMutation, unfollowUserMutation } from "@/graphql/mutations/user";
 import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const UserProfile = ({
     params,
@@ -38,6 +39,7 @@ const UserProfile = ({
         await graphqlClient.request(followUserMutation, { to: user?.id });
         await queryClient.invalidateQueries({ queryKey: ['current_user'] });
         await queryClient.invalidateQueries({ queryKey: ['user_by_id', user?.id] });
+        toast.success(`You are now following ${user.firstName}`);
     }, [user?.id, queryClient]);
 
     // Unfollow Handler
@@ -132,7 +134,8 @@ const UserProfile = ({
                                                 )
 
                                                 : (
-                                                    <button onClick={handleFollowUser} className="px-2 font-semibold cursor-pointer hover:bg-gray-300 transition-all rounded-full dark:bg-gray-100 text-gray-900">Follow</button>
+                                                    <button onClick={handleFollowUser}
+                                                        disabled={!currentUser} className="px-2 font-semibold cursor-pointer hover:bg-gray-300 transition-all rounded-full bg-gray-200 dark:bg-gray-100 text-gray-900">Follow</button>
                                                 )
                                         }
                                     </>
