@@ -87,4 +87,5 @@ export type User = {
   id: Scalars['ID']['output'];
   lastName?: Maybe<Scalars['String']['output']>;
   posts?: Maybe<Array<Maybe<Post>>>;
+  recommendedUsers?: Maybe<Array<Maybe<User>>>;
 };

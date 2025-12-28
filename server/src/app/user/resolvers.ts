@@ -53,6 +53,48 @@ const extraResolvers = {
                 include: { following: true }
             });
             return follows.map(f => f.following);
+        },
+
+
+        recommendedUsers: async (parent: User, args: any, ctx: GraphqlContext) => {
+            if (!ctx.user || !ctx.user.id) return [];
+
+            const users: User[] = [];
+            const myFollowings = await prisma.follow.findMany({
+                where: {
+                    follower: { id: ctx.user.id }
+                },
+                include: {
+                    following: {
+                        include: {
+                            followers: {
+                                include: {
+                                    following: true
+                                }
+                            }
+                        }
+                    }
+                }
+
+            })
+
+            for (const follow of myFollowings) {
+                console.log(follow.following.followers);
+                for (const fof of follow.following.followers) {
+                    const user = fof.following;
+                    // don't recommend myself
+                    if (user.id === ctx.user.id) continue;
+                    // don't recommend someone I already follow
+                    if (myFollowings.find(f => f.followingId === user.id)) continue;
+                    // don't add duplicates
+                    if (users.find(u => u.id === user.id)) continue;
+                    // add user to recommendations
+                    users.push(user);
+                    // limit to 5 recommendations
+                    if (users.length >= 5) break;
+                }
+            }
+            return users;
         }
     }
 }

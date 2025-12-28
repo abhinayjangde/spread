@@ -12,6 +12,12 @@ export const getCurrentUserQuery = `#graphql
       avatar,
       firstName,
       lastName,
+      recommendedUsers {
+        id,
+        firstName,
+        lastName,
+        avatar
+      },
       followers {
         id,
         firstName,
