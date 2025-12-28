@@ -8,7 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { IoBookmarkSharp } from "react-icons/io5";
 import { useMemo } from 'react';
 import { useTheme } from '@/context/ThemeContext';
-import { IoMoon, IoSunny } from "react-icons/io5";
+import { VscColorMode } from "react-icons/vsc";
 
 interface SpreadSidebarButton {
     title: string,
@@ -135,9 +135,9 @@ const Sidebar: React.FC = () => {
                         aria-label="Toggle theme"
                     >
                         {theme === "dark" ? (
-                            <IoSunny className="text-xl lg:text-2xl text-yellow-500" />
+                            <VscColorMode className="text-xl lg:text-2xl text-yellow-500" />
                         ) : (
-                            <IoMoon className="text-xl lg:text-2xl text-gray-700" />
+                            <VscColorMode className="text-xl lg:text-2xl text-gray-700" />
                         )}
                         <span className="hidden xl:block text-sm">
                             {theme === "dark" ? "Light Mode" : "Dark Mode"}

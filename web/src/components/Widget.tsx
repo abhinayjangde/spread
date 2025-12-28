@@ -85,10 +85,10 @@ const Widget: React.FC = () => {
 
                                                 <div className="flex flex-col">
                                                     <p>{u.firstName} {u.lastName}</p>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-400">@{u.firstName.toLowerCase()}</p>
+                                                    <p className="text-sm text-gray-600 dark:text-gray-400">@{u.firstName.toLowerCase()}{u.lastName?.toLowerCase()}</p>
                                                 </div>
                                             </div>
-                                            <Link href={`/${u.id}`} className="text-blue-500 hover:bg-gray-200 dark:bg-white dark:text-black rounded-full h-fit py-1 px-3">Follow</Link>
+                                            <Link href={`/${u.id}`} className="text-blue-500 hover:bg-gray-200 dark:bg-white dark:text-black rounded-full h-fit py-1 px-3">Find</Link>
 
                                         </div>)
                                     }
