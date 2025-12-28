@@ -7,6 +7,8 @@ const _env = {
         s3Region: process.env.AWS_S3_REGION,
         s3BucketName: process.env.AWS_S3_BUCKET_NAME,
     },
+    redisUrl: process.env.REDIS_URL,
+    databaseUrl: process.env.DATABASE_URL,
 }
 
 const env = Object.freeze(_env);
