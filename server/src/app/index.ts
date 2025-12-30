@@ -12,7 +12,7 @@ import { JWTService } from "../services/jwt.js";
 export async function startServer() {
     const app: Express = express();
     app.use(cors<cors.CorsRequest>({
-        origin: ["http://localhost:3000", "https://spread-lh4w.onrender.com", "https://spread.codebhaiya.com/"],
+        origin: ["http://localhost:3000", "https://spread-pi.vercel.app", "https://spread.codebhaiya.com/"],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
     }));
