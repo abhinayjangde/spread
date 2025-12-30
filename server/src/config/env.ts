@@ -1,3 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config({
+    path: "./.env"
+});
+
 const _env = {
     port: process.env.PORT || 9000,
     jwtSecret: process.env.JWT_SECRET,
