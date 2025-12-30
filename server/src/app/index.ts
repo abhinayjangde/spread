@@ -17,6 +17,10 @@ export async function startServer() {
         allowedHeaders: ['Content-Type', 'Authorization'],
     }));
 
+    app.get('/health', (req, res) => {
+        res.status(200).json({ status: 'OK' });
+    });
+
     const apolloServer = new ApolloServer<GraphqlContext>({
         typeDefs: `
             ${User.types}

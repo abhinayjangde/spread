@@ -2,7 +2,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'http://localhost:9000/graphql',
+  schema: 'https://spread-lh4w.onrender.com/graphql',
   documents: ['src/**/*.{tsx,ts}'],
   ignoreNoDocuments: true,
   generates: {
