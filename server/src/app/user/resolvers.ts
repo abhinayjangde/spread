@@ -1,6 +1,6 @@
 import { prisma } from "../../lib/db.js";
 import type { GraphqlContext } from "../../interfaces.js";
-import type { User } from "../../generated/prisma/client.js";
+import type { User, Follow } from "../../generated/prisma/client.js";
 import { UserService } from "../../services/user.js";
 import { redis } from "../../lib/redis.js";
 
@@ -54,14 +54,14 @@ const extraResolvers = {
                 where: { following: { id: parent.id } },
                 include: { follower: true }
             });
-            return follows.map(f => f.follower);
+            return follows.map((f: Follow & { follower: User }) => f.follower);
         },
         following: async (parent: User) => {
             const follows = await prisma.follow.findMany({
                 where: { follower: { id: parent.id } },
                 include: { following: true }
             });
-            return follows.map(f => f.following);
+            return follows.map((f: Follow & { following: User }) => f.following);
         },
 
 
@@ -97,7 +97,7 @@ const extraResolvers = {
                     // don't recommend myself
                     if (user.id === ctx.user.id) continue;
                     // don't recommend someone I already follow
-                    if (myFollowings.find(f => f.followingId === user.id)) continue;
+                    if (myFollowings.find((f: Follow) => f.followingId === user.id)) continue;
                     // don't add duplicates
                     if (users.find(u => u.id === user.id)) continue;
                     // add user to recommendations

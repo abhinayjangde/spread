@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "prisma generate && tsc -p .",
     "start": "node --env-file=.env dist/index.js",
     "dev": "tsc-watch --onSuccess \"pnpm run start\"",
     "migrate": "pnpm dlx prisma migrate dev",
