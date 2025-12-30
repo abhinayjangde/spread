@@ -48,7 +48,7 @@ export async function startServer() {
             ...Post.resolvers.extraResolvers,
             ...User.resolvers.extraResolvers
         },
-
+        introspection: true,
     });
 
     await apolloServer.start();
