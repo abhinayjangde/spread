@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCurrentUser } from '@/hooks/user';
+import { useCurrentUser, useLogout } from '@/hooks/user';
 import { GoHomeFill } from "react-icons/go";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
@@ -9,6 +9,8 @@ import { IoBookmarkSharp } from "react-icons/io5";
 import { useMemo } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { VscColorMode } from "react-icons/vsc";
+import toast from 'react-hot-toast';
+import { LiaSignOutAltSolid } from "react-icons/lia";
 
 interface SpreadSidebarButton {
     title: string,
@@ -18,6 +20,8 @@ interface SpreadSidebarButton {
 
 const Sidebar: React.FC = () => {
     const { user } = useCurrentUser();
+    const { logout } = useLogout();
+
     const { theme, toggleTheme } = useTheme();
 
     const sidebarMenuItems: SpreadSidebarButton[] = useMemo(() => [
@@ -48,6 +52,11 @@ const Sidebar: React.FC = () => {
         }
     ], [user?.id])
 
+    const handleLogout = () => {
+        logout();
+        toast.success("Logged out successfully");
+        window.location.href = "/";
+    }
     return (
         <>
             {/* Mobile Bottom Navigation */}
@@ -130,6 +139,17 @@ const Sidebar: React.FC = () => {
                         )}
                     </div>
 
+                    {/* Logout Button  */}
+
+                    {user && (
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 p-3 w-fit rounded-full hover:bg-gray-200 dark:hover:bg-zinc-800 transition-all"
+                        >
+                            <LiaSignOutAltSolid className="text-xl lg:text-2xl" />
+                            <span>Logout</span>
+                        </button>
+                    )}
                     {/* Theme Toggle */}
                     <button
                         onClick={toggleTheme}
@@ -145,6 +165,8 @@ const Sidebar: React.FC = () => {
                             {theme === "dark" ? "Light Mode" : "Dark Mode"}
                         </span>
                     </button>
+
+
 
                     {user && (
                         <div className="mb-4 flex gap-3 py-2 px-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all cursor-pointer items-center">

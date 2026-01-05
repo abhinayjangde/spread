@@ -3,8 +3,6 @@ import Layout from '@/components/layout/layout'
 import { useState } from 'react'
 import { IoSettingsOutline } from "react-icons/io5"
 
-
-
 // Mock data
 const tabs = ["All", "Verified", "Mention"]
 
