@@ -92,6 +92,8 @@ spread/
 │   ├── prisma/
 │   │   ├── schema.prisma     # Database schema
 │   │   └── migrations/       # Database migration files
+│   ├── BACKEND_ARCHITECTURE.md  # 📚 Complete backend documentation
+│   ├── QUICK_REFERENCE.md       # 🚀 Quick reference guide
 │   └── package.json
 │
 ├── web/                       # Frontend (Next.js App)
@@ -108,6 +110,11 @@ spread/
 │
 └── docker-compose.yml        # Docker services configuration
 ```
+
+### 📖 Documentation
+
+- **Backend Architecture:** [server/BACKEND_ARCHITECTURE.md](server/BACKEND_ARCHITECTURE.md) - Complete backend documentation including architecture, GraphQL schema, authentication flow, and API examples
+- **Quick Reference:** [server/QUICK_REFERENCE.md](server/QUICK_REFERENCE.md) - Quick reference guide for common tasks and operations
 
 ## Local Setup Guide
 
