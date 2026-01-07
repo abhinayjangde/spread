@@ -113,8 +113,12 @@ spread/
 
 ### 📖 Documentation
 
+#### Backend Documentation
 - **Backend Architecture:** [server/BACKEND_ARCHITECTURE.md](server/BACKEND_ARCHITECTURE.md) - Complete backend documentation including architecture, GraphQL schema, authentication flow, and API examples
 - **Quick Reference:** [server/QUICK_REFERENCE.md](server/QUICK_REFERENCE.md) - Quick reference guide for common tasks and operations
+
+#### Frontend Documentation
+- **Frontend Architecture:** [web/README.md](web/README.md) - Comprehensive frontend documentation covering Next.js architecture, React components, state management, GraphQL integration, styling, and development workflow
 
 ## Local Setup Guide
 
