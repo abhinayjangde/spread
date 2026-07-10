@@ -61,7 +61,6 @@ export async function startServer() {
         expressMiddleware(apolloServer, {
             context: async ({ req, res }) => {
                 const token = req.headers.authorization?.split(" ")[1];
-
                 return {
                     user: token ? JWTService.decodeToken(token) : undefined
                 }
