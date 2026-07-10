@@ -59,7 +59,6 @@ export class UserService {
             return userToken;
         } catch (error) {
             const message = error instanceof Error ? error.message : "Unknown database error";
-            console.error("Auth error:", message, error);
             if (
                 message.includes("Can't reach database server") ||
                 message.includes("Tenant or user not found") ||
