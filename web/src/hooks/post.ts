@@ -22,6 +22,7 @@ export const useCreatePost = () => {
     })
     return mutation;
 }
+
 export const useGetAllPosts = () => {
     const query = useQuery({
         queryKey: ["all_posts"],
