@@ -47,6 +47,3 @@ RUN adduser --system nodejs
 USER nodejs
 
 CMD [ "pnpm", "run", "start" ]
-
-
-

@@ -12,6 +12,17 @@ import { User } from "@/gql/graphql";
 import Image from "next/image";
 import Link from "next/link";
 
+const getGraphQLErrorMessage = (error: unknown): string | null => {
+    if (!error || typeof error !== "object") return null;
+
+    const maybeResponse = (error as { response?: { errors?: Array<{ message?: string }> } }).response;
+    const firstError = maybeResponse?.errors?.[0]?.message?.trim();
+    if (firstError) return firstError;
+
+    const fallback = (error as { message?: string }).message?.trim();
+    return fallback || null;
+};
+
 const Widget: React.FC = () => {
     const { user, isLoading } = useCurrentUser();
     const { theme } = useTheme();
@@ -22,14 +33,31 @@ const Widget: React.FC = () => {
             toast.error("Google sign-in failed. Please try again.");
             return;
         }
-        const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, { token: googleToken })
-        toast.success(`${user?.firstName ? `Welcome back, ${user.firstName}!` : "Successfully signed in with Google!"}`);
-        console.log(verifyGoogleToken);
-        if (verifyGoogleToken) {
-            localStorage.setItem("spread_token", verifyGoogleToken);
-        }
+        try {
+            const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, { token: googleToken });
+            toast.success(`${user?.firstName ? `Welcome back, ${user.firstName}!` : "Successfully signed in with Google!"}`);
 
-        await queryClient.invalidateQueries({ queryKey: ["current_user"] });
+            if (verifyGoogleToken) {
+                localStorage.setItem("spread_token", verifyGoogleToken);
+            }
+
+            await queryClient.invalidateQueries({ queryKey: ["current_user"] });
+        } catch (error) {
+            const message = getGraphQLErrorMessage(error);
+            const normalized = message?.toLowerCase() || "";
+
+            if (
+                normalized.includes("temporarily unavailable") ||
+                normalized.includes("can't reach database server") ||
+                normalized.includes("tenant or user not found") ||
+                normalized.includes("self-signed certificate")
+            ) {
+                toast.error("Auth is temporarily unavailable: backend database connection failed.");
+                return;
+            }
+
+            toast.error(message || "Unable to sign in with Google right now.");
+        }
     }, [user, queryClient]);
 
     return (

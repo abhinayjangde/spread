@@ -31,31 +31,45 @@ export class UserService {
             responseType: 'json'
         });
 
-        const existingUser = await prisma.user.findUnique({
-            where: { email: data.email }
-        })
+        try {
+            const existingUser = await prisma.user.findUnique({
+                where: { email: data.email }
+            })
 
-        if (!existingUser) {
-            await prisma.user.create({
-                data: {
-                    email: data.email,
-                    firstName: data?.given_name,
-                    lastName: data?.family_name,
-                    avatar: data?.picture
-                }
-            });
+            if (!existingUser) {
+                await prisma.user.create({
+                    data: {
+                        email: data.email,
+                        firstName: data?.given_name,
+                        lastName: data?.family_name,
+                        avatar: data?.picture
+                    }
+                });
+            }
+
+            const user = await prisma.user.findUnique({
+                where: { email: data.email }
+            })
+
+            if (!user) {
+                throw new Error("User with email not found!")
+            }
+            const userToken = JWTService.generateTokenForUser(user);
+
+            return userToken;
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Unknown database error";
+            console.error("Auth error:", message, error);
+            if (
+                message.includes("Can't reach database server") ||
+                message.includes("Tenant or user not found") ||
+                message.includes("self-signed certificate")
+            ) {
+                throw new Error("Authentication service is temporarily unavailable. Please try again shortly.");
+            }
+
+            throw error;
         }
-
-        const user = await prisma.user.findUnique({
-            where: { email: data.email }
-        })
-
-        if (!user) {
-            throw new Error("User with email not found!")
-        }
-        const userToken = JWTService.generateTokenForUser(user);
-
-        return userToken;
     }
     public static async followUser(from: string, to: string) {
         // Check if already following

@@ -1,8 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
+const fallbackSchemaUrl = 'http://localhost:9000/graphql'
+const schemaUrl = process.env.NEXT_PUBLIC_API_URL?.trim() || fallbackSchemaUrl
+
 const config: CodegenConfig = {
   overwrite: true,
-  schema: process.env.NODE_ENV === "development" ? "http://localhost:9000/graphql" : process.env.NEXT_PUBLIC_API_URL!,
+  schema: schemaUrl,
 
   documents: ['src/**/*.{tsx,ts}'],
   ignoreNoDocuments: true,
