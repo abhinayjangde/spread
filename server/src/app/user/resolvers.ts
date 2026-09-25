@@ -27,13 +27,17 @@ const mutations = {
     followUser: async (parent: any, { to }: { to: string }, ctx: GraphqlContext) => {
         if (!ctx.user || !ctx.user.id) throw new Error("You are not authenticated!");
         await UserService.followUser(ctx.user.id, to)
-        await redis.del(`recommendedUsers:${ctx.user.id}`);
+        try {
+            await redis.del(`recommendedUsers:${ctx.user.id}`);
+        } catch { /* best-effort invalidation */ }
         return true;
     },
     unfollowUser: async (parent: any, { to }: { to: string }, ctx: GraphqlContext) => {
         if (!ctx.user || !ctx.user.id) throw new Error("You are not authenticated!");
         await UserService.unfollowUser(ctx.user.id, to)
-        await redis.del(`recommendedUsers:${ctx.user.id}`);
+        try {
+            await redis.del(`recommendedUsers:${ctx.user.id}`);
+        } catch { /* best-effort invalidation */ }
         return true
     }
 }
@@ -67,10 +71,14 @@ const extraResolvers = {
 
         recommendedUsers: async (parent: User, args: any, ctx: GraphqlContext) => {
             if (!ctx.user || !ctx.user.id) return [];
-            const chachedUsers = await redis.get(`recommendedUsers:${ctx.user.id}`);
-            if (chachedUsers) {
-                return JSON.parse(chachedUsers);
-            }
+
+            // cache is best-effort: fall back to the DB when Redis is unavailable or over quota
+            try {
+                const cachedUsers = await redis.get(`recommendedUsers:${ctx.user.id}`);
+                if (cachedUsers) {
+                    return JSON.parse(cachedUsers);
+                }
+            } catch { /* recompute below */ }
             const users: User[] = [];
             const myFollowings = await prisma.follow.findMany({
                 where: {
@@ -106,7 +114,10 @@ const extraResolvers = {
                     if (users.length >= 5) break;
                 }
             }
-            await redis.set(`recommendedUsers:${ctx.user.id}`, JSON.stringify(users));
+            // best-effort cache write; "EX", 300 = 5 minute TTL so recommendations can't go stale forever
+            try {
+                await redis.set(`recommendedUsers:${ctx.user.id}`, JSON.stringify(users), "EX", 300);
+            } catch { /* ignore */ }
             return users;
         }
     }
