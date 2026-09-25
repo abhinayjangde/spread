@@ -1,0 +1,20 @@
+services:
+  redis:
+    image: redis:8.0-alpine
+    ports:
+      - "6379:6379"
+    
+  db:
+    image: postgres:18.4
+    environment:
+      POSTGRES_USER: abhi
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: spread
+    ports:
+      - "5432:5432"
+    
+    volumes:
+      - db_data:/var/lib/postgresql
+
+volumes:
+  db_data:
